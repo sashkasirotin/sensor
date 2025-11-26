@@ -1,0 +1,407 @@
+{
+	"info": {
+		"_postman_id": "821d41ce-37ed-4c61-8f17-3d01973fc847",
+		"name": "Sensor Data Processor API",
+		"description": "Complete API collection for Sensor Data Processing Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "21538687"
+	},
+	"item": [
+		{
+			"name": "Health & Status",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/health",
+						"description": "Check if the service is running"
+					},
+					"response": []
+				},
+				{
+					"name": "System Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/status",
+						"description": "Get system diagnostics and metrics"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "Upload CSV File",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Save uploadId for subsequent requests",
+									"if (pm.response.code === 202) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set('uploadId', jsonData.data.uploadId);",
+									"    pm.test('Upload successful', function () {",
+									"        pm.expect(jsonData.success).to.be.true;",
+									"    });",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"description": "CSV file containing sensor data",
+									"type": "file",
+									"src": "sensor_data.csv"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/upload",
+						"description": "Upload a CSV file for processing. Returns uploadId immediately."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Results",
+			"item": [
+				{
+					"name": "Get Results (All)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/results/{{uploadId}}",
+						"description": "Get complete processing results for an upload"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Results (Filter by Device)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/results/{{uploadId}}?deviceId=sensor_001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"results",
+								"{{uploadId}}"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "sensor_001",
+									"description": "Filter by device ID"
+								}
+							]
+						},
+						"description": "Get results filtered by device ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Results (Filter by Channel)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/results/{{uploadId}}?channel=acc_x",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"results",
+								"{{uploadId}}"
+							],
+							"query": [
+								{
+									"key": "channel",
+									"value": "acc_x",
+									"description": "Filter by channel"
+								}
+							]
+						},
+						"description": "Get results filtered by channel"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Results (Filter by Device & Channel)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/results/{{uploadId}}?deviceId=sensor_001&channel=acc_x",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"results",
+								"{{uploadId}}"
+							],
+							"query": [
+								{
+									"key": "deviceId",
+									"value": "sensor_001"
+								},
+								{
+									"key": "channel",
+									"value": "acc_x"
+								}
+							]
+						},
+						"description": "Get results filtered by both device and channel"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Results Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/results/{{uploadId}}/summary",
+						"description": "Get quick summary without detailed statistics"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jobs Management",
+			"item": [
+				{
+					"name": "List All Jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/jobs",
+						"description": "List all processing jobs"
+					},
+					"response": []
+				},
+				{
+					"name": "List Jobs by Status (COMPLETED)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/jobs?status=COMPLETED",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "COMPLETED",
+									"description": "Filter by job status (PENDING, PROCESSING, COMPLETED, FAILED)"
+								}
+							]
+						},
+						"description": "List only completed jobs"
+					},
+					"response": []
+				},
+				{
+					"name": "List Jobs by Status (PROCESSING)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/jobs?status=PROCESSING",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "PROCESSING"
+								}
+							]
+						},
+						"description": "List jobs currently being processed"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Job Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/jobs/{{uploadId}}",
+						"description": "Get detailed information about a specific job"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Job",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/api/jobs/{{uploadId}}",
+						"description": "Delete a job from the system"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Scenarios",
+			"item": [
+				{
+					"name": "Get Non-Existent Upload",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/results/non-existent-id",
+						"description": "Test 404 error handling"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authenticate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token\", pm.response.text());",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/v1/contacts/authenticate",
+				"description": "Generated from cURL: curl -X 'POST' \\\n  'http://localhost:8080/api/v1/contacts/authenticate' \\\n  -H 'accept: */*' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"username\": \"alexander\",\n  \"password\": \"sir1\"\n}'"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Empty File",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"value": "",
+							"type": "file"
+						}
+					]
+				},
+				"url": "{{base_url}}/api/upload",
+				"description": "Test empty file validation"
+			},
+			"response": []
+		},
+		{
+			"name": "create user&role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let body = pm.request.body.raw;",
+							"let json = JSON.parse(body);",
+							"",
+							"pm.environment.set(\"username\", json.name);",
+							"pm.environment.set(\"password\", json.password);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "*/*"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"alex\",\n  \"email\": \"alex@dd.com\",\n  \"password\": \"bobikos\",\n  \"roles\": \"ADMIN\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8081/api/v1/auth/newUser",
+				"description": "Generated from cURL: curl -X 'POST' \\\n  'http://localhost:8080/api/v1/contacts/newUser' \\\n  -H 'accept: */*' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"id\": 1073741824,\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"roles\": \"string\"\n}'"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "uploadId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

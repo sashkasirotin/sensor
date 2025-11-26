@@ -1,0 +1,6 @@
+timestamp_ms,device_id,channel,value
+invalid_line_missing_value,sensor_001,acc_x
+invalid_line_missing_value,sensor_001,acc_x
+1699920028000,,acc_x,1.2
+1699920029000,sensor_001,,0.5
+1699920030000,sensor_005,co2,NaN
