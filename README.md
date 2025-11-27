@@ -1,11 +1,11 @@
 ###################sensor assignment######################
-
+open swagger.yaml attached past it in https://editor.swagger.io/ to see all service endpoints
 use instructions:
 1.you should clone the repo to your intelij
 2.build and compile the project ;
 3.run the server on local
 client server interaction :
-1.use postman:
+1.use postman:use localhost
 2.add attached collection to postman
 3.add attached envoirment to have env veraibles 
 4.run create user&role with role USER->you have the abilety only to create role_user
