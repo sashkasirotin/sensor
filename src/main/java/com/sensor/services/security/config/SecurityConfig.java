@@ -1,15 +1,11 @@
-
-
 package com.sensor.services.security.config;
 
-
 import com.sensor.services.security.filter.JwtAuthenticationFilter;
+import com.sensor.services.security.filter.RateLimiterFilter;
 import com.sensor.services.security.implementations.FileStorageService;
 import com.sensor.services.security.implementations.UserInfoUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,21 +25,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final String[] WHITE_LIST_URL = {
+            "/api/v1/auth/**",
+            "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**",
+            "/swagger-resources", "/swagger-resources/**",
+            "/configuration/ui", "/configuration/security",
+            "/swagger-ui/**", "/webjars/**", "/swagger-ui.html",
+            "/api/auth/**", "/api/test/**",
+            "/contacts/authenticate", "/authentication",
+            "/api/v1/contacts/newUser", "/api/v1/contacts/authenticate"
+    };
+
+    @Bean
+    public RateLimiterFilter rateLimiterFilter() {
+        return new RateLimiterFilter();
+    }
+
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
 
     @Bean
-    //authentication
     public UserDetailsService userDetailsService() {
         return new UserInfoUserDetailsService();
     }
-    //can be moved out to a config yaml values yaml and make it configurable from the env config maps
-    private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**", "/v2/api-docs", "/v3/api-docs",
-            "/v3/api-docs/**", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
-            "/configuration/security", "/swagger-ui/**", "/webjars/**", "/swagger-ui.html", "/api/auth/**",
-            "/api/test/**", "/contacts/authenticate", "/authentication", "/api/v1/contacts/newUser", "/api/v1/contacts/authenticate"};
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider =
+                new DaoAuthenticationProvider(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -57,6 +71,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())
+
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -68,21 +83,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
     @Bean
-    public FileStorageService fileStorageService()  {
+    public FileStorageService fileStorageService() {
         return new FileStorageService();
     }
-
 }
-
-
