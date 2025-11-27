@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@OpenAPIDefinition(info = @Info(title = "Contact API", version = "1.0", description = "Manage authentication"))
-@Tag(name = "Contacts", description = "Endpoints for managing authentication")
+//@OpenAPIDefinition(info = @Info(title = "Authentication API", version = "1.0", description = "Manage authentication"))
+//@Tag(name = "user", description = "Endpoints for managing authentication")
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    private JwtApplicationService jwtService;
+    private final JwtApplicationService jwtService;
 
     @Autowired
     private AuthenticationManager authenticationManager;

@@ -24,13 +24,12 @@ import static java.security.KeyRep.Type.SECRET;
 
 @Component
 public class JwtApplicationService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private final FileStorageService storage;
-
     //bad practice to save the key here better in secrets.yaml config map in key vault not hardcoded
     public static final String SECRET = "3f9a1c7d4e8b2f6a9c3d7e5f1b4a8d02e7c6f9a1d3b5e8f7c2a4d6e9b0f1c3d";
+    @Autowired
+    private final FileStorageService storage;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     public JwtApplicationService(FileStorageService storage) {
         this.storage = storage;
     }
