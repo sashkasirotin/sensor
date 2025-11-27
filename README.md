@@ -3,7 +3,7 @@
 
 **open swagger.yaml attached past it in https://editor.swagger.io/ to see all service endpoints**
 **refer to "submition important files" for all desing.md,yaml file,sensor smaples ,collection and other relevatn things **
-
+** requsts would be limited after 10 requests as per my setting**
 **use instructions:**
 1.you should clone the repo to your intelij
 2.build and compile the project ;
