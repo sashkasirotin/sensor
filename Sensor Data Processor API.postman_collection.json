@@ -14,8 +14,14 @@
 					"name": "Health Check",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "{{base_url}}/api/health",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/v1/health",
 						"description": "Check if the service is running"
 					},
 					"response": []
@@ -24,8 +30,14 @@
 					"name": "System Status",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "{{base_url}}/api/status",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/v1/status",
 						"description": "Get system diagnostics and metrics"
 					},
 					"response": []
@@ -51,13 +63,23 @@
 									"    });",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
@@ -65,11 +87,11 @@
 									"key": "file",
 									"description": "CSV file containing sensor data",
 									"type": "file",
-									"src": "sensor_data.csv"
+									"src": "/Users/alexsirotin/Downloads/high_rejection.csv"
 								}
 							]
 						},
-						"url": "{{base_url}}/api/upload",
+						"url": "{{base_url}}/api/v1/upload",
 						"description": "Upload a CSV file for processing. Returns uploadId immediately."
 					},
 					"response": []
@@ -83,8 +105,14 @@
 					"name": "Get Results (All)",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "{{base_url}}/api/results/{{uploadId}}",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/v1/results/{{uploadId}}",
 						"description": "Get complete processing results for an upload"
 					},
 					"response": []
@@ -93,14 +121,21 @@
 					"name": "Get Results (Filter by Device)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/api/results/{{uploadId}}?deviceId=sensor_001",
+							"raw": "{{base_url}}/api/v1/results/{{uploadId}}?deviceId=sensor_001",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"results",
 								"{{uploadId}}"
 							],
@@ -147,14 +182,21 @@
 					"name": "Get Results (Filter by Device & Channel)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/api/results/{{uploadId}}?deviceId=sensor_001&channel=acc_x",
+							"raw": "{{base_url}}/api/v1/results/{{uploadId}}?deviceId=sensor_001&channel=acc_x",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"results",
 								"{{uploadId}}"
 							],
@@ -177,8 +219,14 @@
 					"name": "Get Results Summary",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "{{base_url}}/api/results/{{uploadId}}/summary",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/v1/results/{{uploadId}}/summary",
 						"description": "Get quick summary without detailed statistics"
 					},
 					"response": []
@@ -192,8 +240,14 @@
 					"name": "List All Jobs",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "{{base_url}}/api/jobs",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/v1/jobs",
 						"description": "List all processing jobs"
 					},
 					"response": []
@@ -202,14 +256,21 @@
 					"name": "List Jobs by Status (COMPLETED)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/api/jobs?status=COMPLETED",
+							"raw": "{{base_url}}/api/v1/jobs?status=COMPLETED",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"jobs"
 							],
 							"query": [
@@ -228,14 +289,21 @@
 					"name": "List Jobs by Status (PROCESSING)",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "{{base_url}}/api/jobs?status=PROCESSING",
+							"raw": "{{base_url}}/api/v1/jobs?status=PROCESSING",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"api",
+								"v1",
 								"jobs"
 							],
 							"query": [
@@ -278,118 +346,135 @@
 					"name": "Get Non-Existent Upload",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": "{{base_url}}/api/results/non-existent-id",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{base_url}}/api/v1/results/non-existent-id",
 						"description": "Test 404 error handling"
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Empty File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"value": "",
+									"type": "file"
+								}
+							]
+						},
+						"url": "{{base_url}}/api/v1/upload",
+						"description": "Test empty file validation"
 					},
 					"response": []
 				}
 			]
 		},
 		{
-			"name": "authenticate",
-			"event": [
+			"name": "authentication",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.environment.set(\"token\", pm.response.text());",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "http://localhost:8081/api/v1/contacts/authenticate",
-				"description": "Generated from cURL: curl -X 'POST' \\\n  'http://localhost:8080/api/v1/contacts/authenticate' \\\n  -H 'accept: */*' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"username\": \"alexander\",\n  \"password\": \"sir1\"\n}'"
-			},
-			"response": []
-		},
-		{
-			"name": "Upload Empty File",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
+					"name": "create user&role",
+					"event": [
 						{
-							"key": "file",
-							"value": "",
-							"type": "file"
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let body = pm.request.body.raw;",
+									"let json = JSON.parse(body);",
+									"",
+									"pm.environment.set(\"username\", json.name);",
+									"pm.environment.set(\"password\", json.password);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
-				},
-				"url": "{{base_url}}/api/upload",
-				"description": "Test empty file validation"
-			},
-			"response": []
-		},
-		{
-			"name": "create user&role",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let body = pm.request.body.raw;",
-							"let json = JSON.parse(body);",
-							"",
-							"pm.environment.set(\"username\", json.name);",
-							"pm.environment.set(\"password\", json.password);"
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
 						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "accept",
-						"value": "*/*"
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"alex\",\n  \"email\": \"alex@dd.com\",\n  \"password\": \"bobikos\",\n  \"roles\": \"ADMIN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8081/api/v1/auth/newUser",
+						"description": "Generated from cURL: curl -X 'POST' \\\n  'http://localhost:8080/api/v1/contacts/newUser' \\\n  -H 'accept: */*' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"id\": 1073741824,\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"roles\": \"string\"\n}'"
 					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"alex\",\n  \"email\": \"alex@dd.com\",\n  \"password\": \"bobikos\",\n  \"roles\": \"ADMIN\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+					"response": []
 				},
-				"url": "http://localhost:8081/api/v1/auth/newUser",
-				"description": "Generated from cURL: curl -X 'POST' \\\n  'http://localhost:8080/api/v1/contacts/newUser' \\\n  -H 'accept: */*' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"id\": 1073741824,\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"roles\": \"string\"\n}'"
-			},
-			"response": []
+				{
+					"name": "authenticate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"token\", pm.response.text());",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8081/api/v1/contacts/authenticate",
+						"description": "Generated from cURL: curl -X 'POST' \\\n  'http://localhost:8080/api/v1/contacts/authenticate' \\\n  -H 'accept: */*' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"username\": \"alexander\",\n  \"password\": \"sir1\"\n}'"
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"variable": [
