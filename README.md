@@ -1,6 +1,10 @@
-###################sensor assignment######################
-open swagger.yaml attached past it in https://editor.swagger.io/ to see all service endpoints
-use instructions:
+################### **sensor assignment** ######################
+
+
+**open swagger.yaml attached past it in https://editor.swagger.io/ to see all service endpoints**
+**refer to "submition important files" for all desing.md,yaml file,sensor smaples ,collection and other relevatn things **
+
+**use instructions:**
 1.you should clone the repo to your intelij
 2.build and compile the project ;
 3.run the server on local
